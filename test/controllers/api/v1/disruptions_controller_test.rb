@@ -10,8 +10,8 @@ class Api::V1::DisruptionsControllerTest < ActionDispatch::IntegrationTest
       response.status.must_equal 200
     end
 
-    it 'should return an empty JSON response' do
-      response.body.must_equal({}.to_json)
+    it 'should return a JSON array' do
+      JSON.parse(response.body).class.must_equal Array
     end
   end
 end
