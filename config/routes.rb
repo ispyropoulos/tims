@@ -6,4 +6,6 @@ Rails.application.routes.draw do
       resources :disruptions, only: [:index]
     end
   end
+
+  resources :disruptions, only: [:index]
 end

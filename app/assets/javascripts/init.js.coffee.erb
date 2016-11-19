@@ -1,0 +1,5 @@
+# cache buster v2
+window.Tims =
+  SECRETS: <%= {
+    "GOOGLE_API_KEY" => ENV['GOOGLE_API_KEY']
+  }.reject{|k,v| v.nil?}.to_json %>
