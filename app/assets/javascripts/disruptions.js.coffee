@@ -8,9 +8,18 @@ initMap= ->
     zoom: 10
     center: londonLatLng
 
+  # Create map
   map = new (google.maps.Map)($('#disruptions_map')[0], mapOptions)
+
+  # Create empty cluster marker
+  markerCluster = new MarkerClusterer(map, [],
+    {imagePath: 'cluster_images/m', averageCenter: true})
+
+  # Cache map and cluster marker object for later use
+  $('#disruptions_map').data('marker-cluster', markerCluster)
   $('#disruptions_map').data('map', map)
 
+  loadMarkers()
   setInterval () ->
     loadMarkers()
   , 30000
@@ -33,15 +42,24 @@ loadMarkers= ->
   $.get('/api/v1/disruptions', null, null, 'json')
     .done (data) ->
       map = $('#disruptions_map').data('map')
+
+      # Create the new markers
+      markers = []
       data.forEach (elem)->
         latLngObject = new google.maps.LatLng(
           parseFloat(elem.split(",")[1]),
           parseFloat(elem.split(",")[0])
         )
         marker = new google.maps.Marker(
-          position: latLngObject,
-          map: map
+          position: latLngObject
         )
+        markers.push marker
+
+      # Create new cluster markers and cache them
+      markerCluster = $('#disruptions_map').data('marker-cluster')
+      markerCluster.clearMarkers()
+      markerCluster.addMarkers(markers)
+      $('#disruptions_map').data('marker-cluster', markerCluster)
     .fail (data) ->
       alert('Error loading disruption data from the server!')
 
