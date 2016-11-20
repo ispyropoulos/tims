@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   end
 
   resources :disruptions, only: [:index]
+
+  root to: redirect('/disruptions')
 end
