@@ -7,6 +7,8 @@ class TimsDocument < Nokogiri::XML::SAX::Document
     @points = []
   end
 
+  private
+
   def start_element(name, attrs = [])
     if name == 'DisplayPoint'
       @displaypoint = true
